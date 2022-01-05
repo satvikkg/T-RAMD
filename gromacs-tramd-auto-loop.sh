@@ -9,7 +9,10 @@
 ## Initial setup
 # Prepare the complex in schrodinger and export both preotein and ligand as pdb files. Remove the CONNECT lines only in the ligand.pdb file
 
-#conda activate md
+#Activating conda environment for TRAMD simulations
+eval "$(conda shell.bash hook)"
+conda activate md
+echo "The md conda environment has been ACTIVATED"
 
 ## Preparing protein and ligand
 #initial setup
