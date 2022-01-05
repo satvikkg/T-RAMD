@@ -147,7 +147,7 @@ do
   cd replica$i
   rnd=$((1 + $RANDOM % 99))
   sed -i "s/XX/$rnd/g" gromacs_ramd.mdp
-  gmx grompp -f gromacs_ramd.mdp -c gromacs1.gro -t gromacs1.cpt -p complex.top -n index.ndx -o replica1.tpr
+  gmx grompp -f gromacs_ramd.mdp -c gromacs1.tpr -t gromacs1.cpt -p complex.top -n index.ndx -o replica1.tpr
   wait
   gmx mdrun -v -deffnm replica1 -nb gpu -gpu_id 0 > replica$i.txt
   wait
