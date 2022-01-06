@@ -143,10 +143,10 @@ mkdir replica-txt
 for i in $(seq 1 15)
 do
   mkdir replica$i
-  cp index.ndx complex.top gromacs_ramd.mdp gromacs1.gro gromacs1.cpt ./replica$i
+  cp index.ndx complex.top gromacs_ramd.mdp gromacs1.gro gromacs1.cpt ligand.itp ./replica$i
   cd replica$i
-  rnd=$((1 + $RANDOM % 99))
-  sed -i "s/XX/$rnd/g" gromacs_ramd.mdp
+  rnd=$((9800 + $RANDOM % 9899))
+  sed -i "s/randseed/$rnd/g" gromacs_ramd.mdp
   gmx grompp -f gromacs_ramd.mdp -c gromacs1.tpr -t gromacs1.cpt -p complex.top -n index.ndx -o replica1.tpr
   wait
   gmx mdrun -v -deffnm replica1 -nb gpu -gpu_id 0 > replica$i.txt
