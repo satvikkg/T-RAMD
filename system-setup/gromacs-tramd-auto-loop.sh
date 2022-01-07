@@ -139,11 +139,12 @@ gmx mdrun -v -deffnm gromacs1 -nb gpu -gpu_id 0
 wait
 
 mkdir replica-txt
+cp 
 ##Running replicas for TRAMD
 for i in $(seq 1 15)
 do
   mkdir replica$i
-  cp index.ndx complex.top gromacs_ramd.mdp gromacs1.gro gromacs1.cpt ligand.itp ./replica$i
+  cp index.ndx complex.top gromacs_ramd.mdp gromacs1.tpr gromacs1.cpt ligand.itp ./replica$i
   cd replica$i
   rnd=$((9800 + $RANDOM % 9899))
   sed -i "s/randseed/$rnd/g" gromacs_ramd.mdp
