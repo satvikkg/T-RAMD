@@ -139,7 +139,7 @@ gmx mdrun -v -deffnm gromacs1 -nb gpu -gpu_id 0
 wait
 
 mkdir replica-txt
-cp 
+mv tauRAMD-v2.py ./replica-txt
 ##Running replicas for TRAMD
 for i in $(seq 1 15)
 do
@@ -148,14 +148,18 @@ do
   cd replica$i
   rnd=$((9800 + $RANDOM % 9899))
   sed -i "s/randseed/$rnd/g" gromacs_ramd.mdp
-  gmx grompp -f gromacs_ramd.mdp -c gromacs1.tpr -t gromacs1.cpt -p complex.top -n index.ndx -o replica1.tpr
+  gmx grompp -f gromacs_ramd.mdp -c gromacs1.tpr -t gromacs1.cpt -p complex.top -n index.ndx -o replica$i.tpr
   wait
-  gmx mdrun -v -deffnm replica1 -nb gpu -gpu_id 0 > replica$i.txt
+  gmx mdrun -v -deffnm replica$i -nb gpu -gpu_id 0 > replica$i.txt
   wait
   cp replica$i.txt ../replica-txt
   echo "REPLICA$i complete."
   cd ../
 done
 
+echo "RAMD SIMULATIONS COMPLETE"
+
 cd replica-txt
 cat *.txt > replica-1-15-combined.txt
+grep "==== RAMD ==== GROMACS will be stopped after" replica-1-15-combined.txt > ramd-steps.dat
+python3 tauRAMD-v2.py ramd-steps.dat
